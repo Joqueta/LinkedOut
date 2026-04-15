@@ -1,66 +1,119 @@
-@import 'tailwindcss';
-@import '../../vendor/livewire/flux/dist/flux.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@source '../views';
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
-@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
-
-@custom-variant dark (&:where(.dark, .dark *));
-
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-
-    --color-zinc-50: #fafafa;
-    --color-zinc-100: #f5f5f5;
-    --color-zinc-200: #e5e5e5;
-    --color-zinc-300: #d4d4d4;
-    --color-zinc-400: #a3a3a3;
-    --color-zinc-500: #737373;
-    --color-zinc-600: #525252;
-    --color-zinc-700: #404040;
-    --color-zinc-800: #262626;
-    --color-zinc-900: #171717;
-    --color-zinc-950: #0a0a0a;
-
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
-    --color-accent-foreground: var(--color-white);
-}
-
-@layer theme {
-    .dark {
-        --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
-        --color-accent-foreground: var(--color-neutral-800);
-    }
-}
 
 @layer base {
-
-    *,
-    ::after,
-    ::before,
-    ::backdrop,
-    ::file-selector-button {
-        border-color: var(--color-gray-200, currentColor);
+    body {
+        @apply text-gray-900;
     }
 }
 
-[data-flux-field]:not(ui-radio, ui-checkbox) {
-    @apply grid gap-2;
+@layer components {
+
+    ::-webkit-scrollbar {
+        @apply w-2;
+    }
+
+    ::-webkit-scrollbar-track {
+        @apply bg-gray-100;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply bg-linkedout-400 rounded-full;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        @apply bg-linkedout-500;
+    }
+
+    @keyframes slide-in {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .fierté-enter {
+        animation: slide-in 0.3s ease-out;
+    }
+
+    .card-hover {
+        @apply transition-all duration-200;
+    }
+
+    .card-hover:hover {
+        @apply shadow-lg transform -translate-y-0.5;
+    }
+
+    .tooltip {
+        @apply absolute z-50 px-3 py-2 text-xs text-white bg-gray-900 rounded-lg shadow-lg;
+        @apply opacity-0 invisible transition-all duration-200;
+    }
+
+    .tooltip-visible {
+        @apply opacity-100 visible;
+    }
+
+    @keyframes pulse-failure {
+
+        0%,
+        100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+    }
+
+    .pulse-failure {
+        animation: pulse-failure 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
 }
 
-[data-flux-label] {
-    @apply  !mb-0 !leading-tight;
+@layer utilities {
+
+    .text-balance {
+        text-wrap: balance;
+    }
+
+    .filter-grayscale-80 {
+        filter: grayscale(80%);
+    }
+
+    .skeleton {
+        @apply bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse;
+        background-size: 200% 100%;
+        animation: skeleton-loading 1.5s ease-in-out infinite;
+    }
+
+    @keyframes skeleton-loading {
+        0% {
+            background-position: 200% 0;
+        }
+
+        100% {
+            background-position: -200% 0;
+        }
+    }
 }
 
-input:focus[data-flux-control],
-textarea:focus[data-flux-control],
-select:focus[data-flux-control] {
-    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+.reaction-btn {
+    @apply inline-flex items-center space-x-1 px-3 py-1.5 rounded-full text-sm;
+    @apply border border-gray-300 bg-white hover:bg-gray-50;
+    @apply transition-all duration-200;
 }
 
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */
+.reaction-btn.active {
+    @apply bg-linkedout-50 border-linkedout-400 text-linkedout-600;
+}
+
+.reaction-btn:hover {
+    @apply shadow-md transform scale-105;
+}
