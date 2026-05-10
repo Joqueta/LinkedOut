@@ -1,16 +1,18 @@
 <div class="space-y-4">
-
+    
     <div class="bg-white rounded-lg shadow-md overflow-hidden sticky top-20">
         <div class="bg-linkedout-500 px-4 py-3">
-            <h3 class="text-white font-semibold text-sm flex items-center space-x-2">
+            <h3 class="text-black font-semibold text-sm flex items-center space-x-2">
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
                 </svg>
                 <span>Top Losers du mois</span>
             </h3>
         </div>
-
+        
+        
         <div class="divide-y divide-gray-200">
+            @auth
             @php
             // Mock data - à remplacer par une vraie requête DB
             $topLosers = [
@@ -50,8 +52,9 @@
             </div>
             @endforeach
         </div>
-
-        <a href="{{ route('ranking') }}" class="block px-4 py-3 text-center text-sm font-medium text-linkedout-500 hover:bg-gray-50 transition border-t border-gray-200">
+        
+        @endauth
+        {{-- <a href="{{ route('ranking') }}" class="block px-4 py-3 text-center text-sm font-medium text-linkedout-500 hover:bg-gray-50 transition border-t border-gray-200"> --}}
             Voir le classement complet
         </a>
     </div>
@@ -94,5 +97,6 @@
             <span class="italic">Parce que l'échec mérite aussi son réseau</span>
         </p>
     </div>
+
 
 </div>

@@ -1,3 +1,6 @@
+
+    @auth
+
 <div class="bg-white rounded-lg shadow-md overflow-hidden sticky top-20">
     <div class="h-16 bg-gradient-to-r from-linkedout-400 to-linkedout-600 relative">
         <div class="absolute -bottom-10 left-1/2 transform -translate-x-1/2">
@@ -17,7 +20,8 @@
             {{ Auth::user()->current_fail ?? 'En recherche active de nouvelles opportunités d\'échec' }}
         </p>
     </div>
-
+    
+    
     <div class="px-4 py-3 border-b border-gray-200">
         <div class="flex justify-between items-center text-xs text-gray-600 mb-2">
             <span>Visiteurs du profil</span>
@@ -28,37 +32,21 @@
             <span class="font-semibold text-failure">{{ Auth::user()->ponts_brules ?? 0 }}</span>
         </div>
     </div>
+    @endauth
 
     <div class="px-4 py-3 border-b border-gray-200">
         <div class="flex items-center space-x-2">
-            <span class="text-2xl">
-                @php
-                $fiertesCount = Auth::user()->posts()->count() ?? 0;
-                $badge = match(true) {
-                $fiertesCount >= 100 => '💎',
-                $fiertesCount >= 50 => '🥇',
-                $fiertesCount >= 10 => '🥈',
-                default => '🥉'
-                };
-                $badgeName = match(true) {
-                $fiertesCount >= 100 => 'VP de l\'Inutile',
-                $fiertesCount >= 50 => 'Manager Sans Équipe',
-                $fiertesCount >= 10 => 'Coordinateur de Rien',
-                default => 'Stagiaire Éternel'
-                };
-                @endphp
-                {{ $badge }}
-            </span>
+            
             <div class="flex-1">
-                <p class="text-xs font-semibold text-gray-700">{{ $badgeName }}</p>
-                <p class="text-xs text-gray-500">{{ $fiertesCount }} fiertés publiées</p>
+                {{-- <p class="text-xs font-semibold text-gray-700">{{ $badgeName }}</p>
+                <p class="text-xs text-gray-500">{{ $fiertesCount }} fiertés publiées</p> --}}
             </div>
         </div>
     </div>
 
-    <a href="{{ route('profile.show', Auth::id()) }}" class="block px-4 py-3 text-center text-sm font-medium text-linkedout-500 hover:bg-gray-50 transition">
+    {{-- <a href="{{ route('profile.show', Auth::id()) }}" class="block px-4 py-3 text-center text-sm font-medium text-linkedout-500 hover:bg-gray-50 transition">
         Voir mon CV catastrophique
-    </a>
+    </a> --}}
 
     <div class="bg-gradient-to-br from-shame-light to-failure-light px-4 py-3 border-t border-gray-200">
         <div class="flex items-start space-x-2">
