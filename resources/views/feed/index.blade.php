@@ -78,12 +78,36 @@
                    
                 </div>
                 <div class="flex items-center space-x-4 text-sm text-gray-600">
-                    <span>{{ $post->comment->count() }} commentaires</span>
+                    <button
+    type="button"
+    onclick="document.getElementById('comments-{{ $post->id }}').classList.toggle('hidden')"
+    class="hover:underline"
+>
+    {{ $post->comment->count() }} commentaires
+</button>
+                  
                     <span>{{ rand(1, 20) }} partages</span>
                 </div>
-            </div>
+                
+            </div class="pb-4" >
+            <div id="comments-{{ $post->id }}" class="hidden mt-4 border-t pt-4 space-y-3">
+    @forelse ($post->comment as $comment)
+        <div class="bg-gray-50 rounded-lg p-4">
+            <p class="text-gray-800">
+                {{ $comment->user->name }} :
+            </p>
+            <p class="text-sm text-gray-900">
+                {{ $comment->message }}
+            </p>
+        </div>
+    @empty
+        <p class="text-sm text-gray-500">
+            Aucun commentaire pour le moment.
+        </p>
+    @endforelse
+</div>
 
-            <div class="flex items-center justify-around">
+            <div class="mt-3.5 flex items-center justify-around">
                 @foreach(['😬' => 'Gêné', '👎' => 'Pas terrible', '🫡' => 'Courage', '🤣' => 'LOL', '🕯️' => 'Condoléances'] as $emoji => $label)
                 <button class="reaction-btn">
                     <span>{{ $emoji }}</span>
