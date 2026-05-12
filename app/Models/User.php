@@ -53,4 +53,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Company_fail::class);
     }
+    public function comment(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

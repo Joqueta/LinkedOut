@@ -27,6 +27,7 @@ return new class extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->text("message");
+            $table->foreignIdFor(User::class)->constrained();
             $table->foreignIdFor(Post::class)->constrained();
             $table->timestamps();
         });
