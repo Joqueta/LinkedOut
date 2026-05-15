@@ -14,18 +14,18 @@
                 </a>
 
                 <div class="hidden md:flex items-center space-x-6">
-                    {{-- <a href="{{ route('feed') }}" class="nav-link {{ request()->routeIs('feed') ? 'active' : '' }}"> --}}
+                    <a href="{{ route('feed') }}" class="nav-link {{ request()->routeIs('feed') ? 'active' : '' }}">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                         </svg>
                         <span>Fiertés</span>
                     </a>
 
-                    {{-- <a href="{{ route('profile.show', Auth::id()) }}" class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}"> --}}
+                    <a href="{{ Auth::check() ? route('profile.show', Auth::user()->slug) : route('login') }}" class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                         </svg>
-                        <span>Profil</span>
+                        <span>{{ Auth::check() ? "Profil" : "Login"}} </span>
                     </a>
 
                     {{-- <a href="{{ route('ranking') }}" class="nav-link {{ request()->routeIs('ranking') ? 'active' : '' }}"> --}}

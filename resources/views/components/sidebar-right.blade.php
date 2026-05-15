@@ -27,7 +27,7 @@
             @foreach($topLosers as $index => $loser)
             <div class="px-4 py-3 hover:bg-gray-50 transition {{ $loser['current'] ?? false ? 'bg-failure-light' : '' }}">
                 <div class="flex items-center space-x-3">
-                    <div class="flex-shrink-0 w-6 text-center">
+                    <div class="shrink-0 w-6 text-center">
                         @if($index === 0)
                         <span class="text-lg">👑</span>
                         @else
