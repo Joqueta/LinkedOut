@@ -91,6 +91,34 @@
     }
 }
 
+@keyframes smooth-appear {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.smooth-appear {
+    animation: smooth-appear 0.25s ease-out;
+}
+
 .fierté-enter {
     animation: slide-in 0.3s ease-out;
+}
+
+.nav-link{
+    display: flex;
+    gap: 0.5rem;
+    &:hover{
+        color: rgba(0, 0, 0, 0.721);
+
+    }
+    &.active{
+        color: rgba(0, 0, 0, 0.721);
+    }
 }
