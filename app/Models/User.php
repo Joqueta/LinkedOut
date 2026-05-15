@@ -12,6 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Override;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
@@ -56,5 +57,30 @@ class User extends Authenticatable
     public function comment(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    // Route 
+    #[Override]
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function ($user) {
+            if (empty($user->slug)) {
+                $baseSlug = Str::slug($user->name);
+                $slug = $baseSlug;
+                $count = 1;
+
+                while (static::where('slug', '=', $slug, 'and')->exists()) {
+                    $slug = $baseSlug . '-' . $count;
+                    $count++;
+                }
+
+                $user->slug = $slug;
+            }
+        });
     }
 }
