@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Comment extends Model
 {
+    // Protect
+    protected $fillable = [
+        'post_id',
+        'user_id',
+        'message',
+    ];
+
     // Factory 
     use HasFactory;
 

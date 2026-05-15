@@ -9,6 +9,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Post extends Model
 {
+    // Protect
+    protected $fillable = [
+        'title',
+        'content',
+        'user_id',
+    ];
 
     // Factory 
     use HasFactory;
