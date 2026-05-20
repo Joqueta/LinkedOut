@@ -101,9 +101,8 @@
             </button>
         </div>
     </div>
-@auth
+
     <livewire:comment-feed />
-    @endauth
 
     <div class="text-center mt-6">
         <x-button variant="outline" size="lg">
