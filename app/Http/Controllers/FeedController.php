@@ -37,27 +37,15 @@ class FeedController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::with(['user', 'type'])
+            ->latest()
+            ->paginate(10);
 
-        if (Schema::hasTable('types')) {
-            $types = Type::all();
-        } else {
-            // Fallback to the in-memory POST_TYPES when the DB table isn't available yet
-            $types = collect(self::POST_TYPES)->map(function ($cfg, $key) {
-                return (object) [
-                    'id' => $key,
-                    'name' => $cfg['label'],
-                    'badge' => $cfg['badge'],
-                    'placeholder' => $cfg['placeholder'],
-                    'template' => $cfg['template'],
-                ];
-            })->values();
-        }
+        $postTypes = Type::all();
 
         return view('feed.index', [
-            'posts' => $posts,
-            'isAuthentificated' => Auth::check(),
-            'postTypes' => $types,
+            'posts'    => $posts,
+            'postTypes' => $postTypes,
         ]);
     }
 

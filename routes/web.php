@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 // use App\Http\Controllers\RankingController;
@@ -9,18 +10,17 @@ use App\Http\Controllers\ProfileController;
 
 
 Route::middleware('web')->group(function () {
-
     Route::get('/', [FeedController::class, 'index'])->name('feed');
 });
 
-
 Route::middleware(['auth'])->group(function () {
+    Route::post('/posts', [PostController::class, 'store'])->name('post.store');
+    Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('post.destroy');
 
     Route::resource('comments', CommentController::class);
 
-    Route::post('/post', [FeedController::class, 'store'])->name('post.store');
-
     Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
+
     // Route::get('/profile/{user}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::patch('/profile/{user}', [ProfileController::class, 'update'])->name('profile.update');
 

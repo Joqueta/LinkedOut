@@ -148,12 +148,57 @@
         </div>
     </div>
 
-    <livewire:comment-feed />
+    {{-- Posts --}}
+    <div class="space-y-4">
+        @forelse ($posts as $post)
+        <div class="bg-white rounded-2xl shadow-md p-5 space-y-3">
+            <div class="flex items-start justify-between">
+                <div class="flex items-center gap-3">
+                    <img
+                        src="{{ $post->user->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode($post->user->name) . '&background=dc2626&color=fff&size=128' }}"
+                        alt="{{ $post->user->name }}"
+                        class="w-10 h-10 rounded-full object-cover">
+                    <div>
+                        <p class="text-sm font-semibold text-gray-800">{{ $post->user->name }}</p>
+                        <p class="text-xs text-gray-400">{{ $post->created_at->diffForHumans() }}</p>
+                    </div>
+                </div>
+                @if ($post->type)
+                <span class="inline-flex rounded-full border px-2.5 py-1 text-xs font-medium {{ $post->type->badge }}">
+                    {{ $post->type->name }}
+                </span>
+                @endif
+            </div>
+            <h3 class="font-semibold text-gray-900">{{ $post->title }}</h3>
+            <p class="text-sm text-gray-700 leading-relaxed">{{ $post->content }}</p>
+            @auth
+            @if (Auth::id() === $post->user_id)
+            <div class="flex justify-end">
+                <form method="POST" action="{{ route('post.destroy', $post) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button
+                        type="submit"
+                        class="text-xs text-red-400 hover:text-red-600 transition"
+                        onclick="return confirm('Supprimer cette publication ?')">
+                        Supprimer
+                    </button>
+                </form>
+            </div>
+            @endif
+            @endauth
+        </div>
+        @empty
+        <div class="text-center py-12 text-gray-400">
+            <p class="text-lg">Aucune fierté pour l'instant.</p>
+            <p class="text-sm">Sois le premier à partager ton échec 😬</p>
+        </div>
+        @endforelse
+    </div>
 
-    <div class="text-center mt-6">
-        <x-button variant="outline" size="lg">
-            Charger plus d'échecs
-        </x-button>
+    {{-- Pagination --}}
+    <div class="mt-6">
+        {{ $posts->links() }}
     </div>
 
 </x-layouts.app>
