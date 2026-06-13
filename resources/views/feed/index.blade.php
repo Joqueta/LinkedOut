@@ -96,24 +96,17 @@
     <script>
         (() => {
             const form = document.getElementById('post-form');
-
-            if (!form) {
-                return;
-            }
+            if (!form) return;
 
             const typeField = form.querySelector('#type');
             const contentField = form.querySelector('#content');
             const templateButtons = form.querySelectorAll('[data-template-button]');
 
             const renderTemplate = (button) => {
-                if (!button) {
-                    return;
-                }
-
+                if (!button) return;
                 typeField.value = button.dataset.typeId;
                 contentField.placeholder = button.dataset.placeholder || contentField.placeholder;
                 contentField.value = button.dataset.template || contentField.value;
-
                 templateButtons.forEach((candidate) => {
                     const active = candidate === button;
                     candidate.classList.toggle('border-red-400', active);
@@ -135,70 +128,7 @@
     </script>
     @endauth
 
-
-    <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center space-x-2">
-            <button class="px-3 py-1.5 text-sm font-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
-                Plus récents
-            </button>
-
-            <button class="px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-white hover:border hover:border-gray-300 rounded-md">
-                Plus honteux
-            </button>
-        </div>
-    </div>
-
-    {{-- Posts --}}
-    <div class="space-y-4">
-        @forelse ($posts as $post)
-        <div class="bg-white rounded-2xl shadow-md p-5 space-y-3">
-            <div class="flex items-start justify-between">
-                <div class="flex items-center gap-3">
-                    <img
-                        src="{{ $post->user->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode($post->user->name) . '&background=dc2626&color=fff&size=128' }}"
-                        alt="{{ $post->user->name }}"
-                        class="w-10 h-10 rounded-full object-cover">
-                    <div>
-                        <p class="text-sm font-semibold text-gray-800">{{ $post->user->name }}</p>
-                        <p class="text-xs text-gray-400">{{ $post->created_at->diffForHumans() }}</p>
-                    </div>
-                </div>
-                @if ($post->type)
-                <span class="inline-flex rounded-full border px-2.5 py-1 text-xs font-medium {{ $post->type->badge }}">
-                    {{ $post->type->name }}
-                </span>
-                @endif
-            </div>
-            <h3 class="font-semibold text-gray-900">{{ $post->title }}</h3>
-            <p class="text-sm text-gray-700 leading-relaxed">{{ $post->content }}</p>
-            @auth
-            @if (Auth::id() === $post->user_id)
-            <div class="flex justify-end">
-                <form method="POST" action="{{ route('post.destroy', $post) }}">
-                    @csrf
-                    @method('DELETE')
-                    <button
-                        type="submit"
-                        class="text-xs text-red-400 hover:text-red-600 transition"
-                        onclick="return confirm('Supprimer cette publication ?')">
-                        Supprimer
-                    </button>
-                </form>
-            </div>
-            @endif
-            @endauth
-        </div>
-        @empty
-        <div class="text-center py-12 text-gray-400">
-            <p class="text-lg">Aucune fierté pour l'instant.</p>
-            <p class="text-sm">Sois le premier à partager ton échec 😬</p>
-        </div>
-        @endforelse
-    </div>
-
-    {{-- Pagination --}}
-    <div class="mt-6">
-        {{ $posts->links() }}
-    </div>
+    {{-- Feed Livewire (filtres + tri + posts + pagination) --}}
+    <livewire:post-feed />
 
 </x-layouts.app>
