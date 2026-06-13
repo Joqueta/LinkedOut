@@ -5,6 +5,7 @@ use App\Http\Controllers\FeedController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LeaderboardController;
 // use App\Http\Controllers\RankingController;
 // use App\Http\Controllers\JobController;
 
@@ -21,6 +22,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
 
+
+    // Dans le groupe public (sans auth)
+    Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard');
     // Route::get('/profile/{user}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::patch('/profile/{user}', [ProfileController::class, 'update'])->name('profile.update');
 
