@@ -106,6 +106,22 @@ new class extends Component
                 >
                     {{ $post->comment_count }} commentaires
                 </button>
+               @auth
+            @if (Auth::id() === $post->user_id)
+            <div class="flex justify-end">
+                <form method="POST" action="{{ route('post.destroy', $post) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button
+                        type="submit"
+                        class="text-xs text-red-400 hover:text-red-600 transition"
+                        onclick="return confirm('Supprimer cette publication ?')">
+                        Supprimer
+                    </button>
+                </form>
+            </div>
+            @endif
+            @endauth
             </div>
 
             <div class="mt-3 flex items-center justify-around">
