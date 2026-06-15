@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Company;
+use App\Models\Type;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -21,11 +22,17 @@ class PostFactory extends Factory
     {
         $title = fake()->words(random_int(3, 6), asText: true);
 
+        static $typeIds;
+
+        $typeIds ??= Type::pluck('id')->all();
+
+
         return [
             'title' => str($title)->title()->toString(),
             'content' => implode(' ', fake()->words(random_int(10, 25))),
             'user_id' => fake()->boolean() ? User::factory() : null,
             'company_id' => fake()->boolean() ? Company::factory() : null,
+            'type_id' => fake()->randomElement($typeIds),
         ];
     }
 

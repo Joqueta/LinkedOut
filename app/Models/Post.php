@@ -14,6 +14,7 @@ class Post extends Model
         'title',
         'content',
         'user_id',
+        'type_id',
     ];
 
     // Factory 
@@ -31,5 +32,9 @@ class Post extends Model
     public function comment(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(Type::class)->withDefault(['name' => 'Inconnu']);
     }
 }
