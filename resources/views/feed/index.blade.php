@@ -94,6 +94,8 @@
         </div>
     </form>
 
+
+
     @endauth
 
 
@@ -109,13 +111,17 @@
         </div>
     </div>
 
-        <livewire:comment-feed />
+        <livewire:post-feed />
 
     
     {{-- Pagination --}}
     <div class="mt-6">
         {{ $posts->links() }}
     </div>
+
+    
+
+
 
 
 </x-layouts.app>

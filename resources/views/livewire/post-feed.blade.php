@@ -2,6 +2,7 @@
 
 use App\Models\Post;
 use App\Models\Comment;
+use App\Models\Type;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -11,10 +12,13 @@ new class extends Component
     public array $openedComments = [];
     public array $messages = [];
 
+    public string $filter = 'all';
+    public string $sort = 'recent';
+
     #[On('post-created')]
     public function refreshFeed(): void
     {
-        // Livewire re-render automatiquement.
+        //
     }
 
     public function toggleComments(int $postId): void
@@ -42,11 +46,24 @@ new class extends Component
 
     public function with(): array
     {
+        $query = Post::with(['user', 'company', 'comment.user', 'type'])
+            ->withCount('comment');
+
+        if ($this->filter !== 'all') {
+            $query->whereHas('type', function ($query) {
+                $query->where('name', $this->filter);
+            });
+        }
+
+        if ($this->sort === 'honteux') {
+            $query->orderByDesc('comment_count');
+        } else {
+            $query->latest('id');
+        }
+
         return [
-            'posts' => Post::with(['user', 'company', 'comment.user'])
-                ->withCount('comment')
-                ->latest('id')
-                ->get(),
+            'posts' => $query->get(),
+            'types' => Type::orderBy('name')->get(),
         ];
     }
 };
@@ -54,6 +71,55 @@ new class extends Component
 ?>
 
 <div class="space-y-4" wire:poll.10s>
+
+    {{-- Filtres --}}
+    <div class="flex items-center justify-between mb-4 flex-wrap gap-3">
+
+        <div class="flex items-center gap-2 flex-wrap">
+            <button
+                type="button"
+                wire:click="$set('filter', 'all')"
+                class="px-3 py-1.5 text-sm font-medium rounded-md border transition
+                    {{ $filter === 'all' ? 'bg-red-500 text-white border-red-500' : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50' }}"
+            >
+                Tous
+            </button>
+
+            @foreach ($types as $type)
+                <button
+                    type="button"
+                    wire:click="$set('filter', '{{ $type->name }}')"
+                    class="px-3 py-1.5 text-sm font-medium rounded-md border transition
+                        {{ $filter === $type->name ? 'bg-red-500 text-white border-red-500' : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50' }}"
+                >
+                    {{ $type->name }}
+                </button>
+            @endforeach
+        </div>
+
+        <div class="flex items-center gap-2">
+            <button
+                type="button"
+                wire:click="$set('sort', 'recent')"
+                class="px-3 py-1.5 text-sm font-medium rounded-md border transition
+                    {{ $sort === 'recent' ? 'bg-gray-800 text-white border-gray-800' : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50' }}"
+            >
+                Plus récents
+            </button>
+
+            <button
+                type="button"
+                wire:click="$set('sort', 'honteux')"
+                class="px-3 py-1.5 text-sm font-medium rounded-md border transition
+                    {{ $sort === 'honteux' ? 'bg-gray-800 text-white border-gray-800' : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50' }}"
+            >
+                Plus honteux
+            </button>
+        </div>
+
+    </div>
+
+    {{-- Posts --}}
     @foreach ($posts as $post)
         <x-card class="card-hover smooth-appear" wire:key="post-{{ $post->id }}">
 
@@ -80,6 +146,12 @@ new class extends Component
                         <p class="text-xs text-gray-400">
                             {{ $post->created_at->diffForHumans() }}
                         </p>
+
+                        @if ($post->type)
+                            <p class="text-xs text-red-500 mt-1">
+                                {{ $post->type->name }}
+                            </p>
+                        @endif
                     </div>
                 </div>
 
@@ -106,22 +178,23 @@ new class extends Component
                 >
                     {{ $post->comment_count }} commentaires
                 </button>
-               @auth
-            @if (Auth::id() === $post->user_id)
-            <div class="flex justify-end">
-                <form method="POST" action="{{ route('post.destroy', $post) }}">
-                    @csrf
-                    @method('DELETE')
-                    <button
-                        type="submit"
-                        class="text-xs text-red-400 hover:text-red-600 transition"
-                        onclick="return confirm('Supprimer cette publication ?')">
-                        Supprimer
-                    </button>
-                </form>
-            </div>
-            @endif
-            @endauth
+
+                @auth
+                    @if (Auth::id() === $post->user_id)
+                        <form method="POST" action="{{ route('post.destroy', $post) }}">
+                            @csrf
+                            @method('DELETE')
+
+                            <button
+                                type="submit"
+                                class="text-xs text-red-400 hover:text-red-600 transition"
+                                onclick="return confirm('Supprimer cette publication ?')"
+                            >
+                                Supprimer
+                            </button>
+                        </form>
+                    @endif
+                @endauth
             </div>
 
             <div class="mt-3 flex items-center justify-around">
@@ -200,4 +273,5 @@ new class extends Component
 
         </x-card>
     @endforeach
+
 </div>
