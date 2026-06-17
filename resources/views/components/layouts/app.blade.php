@@ -18,37 +18,35 @@
 </head>
 
 <body class="bg-gray-100 antialiased">
-    <!-- Navbar -->
     <x-navbar />
 
-    <!-- Container Principal -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
-            <!-- Sidebar Gauche (Profil) -->
-            <aside class="lg:col-span-3 hidden lg:block">
-                <x-sidebar-left />
+            <!-- Sidebar gauche -->
+            <aside class="hidden lg:block lg:col-span-3">
+                <div class="sticky top-24">
+                    <x-sidebar-left />
+                </div>
             </aside>
 
-            <!-- Contenu Principal -->
+            <!-- Contenu principal -->
             <main class="lg:col-span-6">
                 {{ $slot }}
             </main>
 
-            <!-- Sidebar Droite (Classement) -->
-            <aside class="lg:col-span-3 hidden lg:block">
-                {{-- <x-sidebar-right /> --}}
+            <!-- Sidebar droite -->
+            <aside class="hidden lg:block lg:col-span-3">
+                <div class="sticky top-24">
+                    <x-sidebar-right />
+                </div>
             </aside>
 
         </div>
     </div>
 
-    <!-- Notifications Toast (optionnel) -->
-    <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2">
-        <!-- Les notifications Livewire apparaîtront ici -->
-    </div>
+    <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2"></div>
 
     @livewireScripts
 </body>
-
 </html>
