@@ -1,5 +1,5 @@
 <x-layouts.app>
-   
+
     @auth
     @if (session('success'))
     <div class="mb-3 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-700 shadow-sm">
@@ -99,29 +99,7 @@
     @endauth
 
 
-    <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center space-x-2">
-            <button class="px-3 py-1.5 text-sm font-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50">
-                Plus récents
-            </button>
-
-            <button class="px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-white hover:border hover:border-gray-300 rounded-md">
-                Plus honteux
-            </button>
-        </div>
-    </div>
-
-        <livewire:post-feed />
-
-    
-    {{-- Pagination --}}
-    <div class="mt-6">
-        {{ $posts->links() }}
-    </div>
-
-    
-
-
+    <livewire:comment-feed />
 
 
 </x-layouts.app>

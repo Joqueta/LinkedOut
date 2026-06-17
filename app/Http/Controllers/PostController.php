@@ -29,6 +29,7 @@ class PostController extends Controller
     {
         $this->authorize('delete', $post);
 
+        $post->comment()->delete();
         $post->delete();
 
         return back()->with('success', 'Publication supprimée.');
